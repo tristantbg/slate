@@ -17,6 +17,7 @@
   "engine": ">= 6.4.0",
   "dependencies": {
     "@shopify/themekit": "0.6.11",
+    "@shopify/slate-component-loader": ">1.0.0-alpha.0",
     "autoprefixer": "6.7.7",
     "babel-cli": "6.24.1",
     "babel-jest": "20.0.3",

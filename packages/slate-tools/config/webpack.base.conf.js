@@ -169,7 +169,7 @@ module.exports = {
       {
         test: /\.liquid$/,
         exclude: commonExcludes(),
-        loader: `extract-loader!liquid-loader?dev-server=${
+        loader: `extract-loader!liquid-asset-loader?dev-server=${
           isDevServer ? 'true' : 'false'
         }`,
       },
