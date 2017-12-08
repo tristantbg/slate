@@ -29,36 +29,36 @@ function findComponentDeclarations(source) {
     }
   }
 
-  matches.forEach(ma => console.log(ma.props));
-  console.log(matches);
   return matches;
 }
 
 module.exports = function(content) {
   this.cacheable();
 
-  const matches = findComponentDeclarations(source);
+  const components = findComponentDeclarations(content);
 
-  if (matches === null) {
+  if (components.length <= 0) {
     return content;
   }
 
-  const componentName = matches[1].componentName;
-  const componentPath = path.resolve(
-    `src/components/${componentName}.component.liquid`
-  );
+  components.forEach(component => {
+    const componentName = component.componentName;
+    const componentPath = path.resolve(
+      `src/components/${componentName}.component.liquid`
+    );
 
-  const componentContent = fs.readFileSync(componentPath, 'utf-8');
+    const componentContent = fs.readFileSync(componentPath, 'utf-8');
 
-  const parts = parse(
-    componentContent,
-    componentName,
-    this.sourceMap,
-    componentPath,
-    false
-  );
+    const parts = parse(
+      componentContent,
+      componentName,
+      this.sourceMap,
+      componentPath,
+      false
+    );
 
-  console.log(parts);
+    console.log(parts);
+  });
 
   return content;
 };
