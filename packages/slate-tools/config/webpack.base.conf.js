@@ -25,6 +25,22 @@ const contextReplacementPlugins = () => {
       /__appsrc__/,
       replaceCtxRequest(paths.src)
     ),
+    new webpack.ContextReplacementPlugin(
+      /__apptemplates__/,
+      replaceCtxRequest(paths.templates)
+    ),
+    new webpack.ContextReplacementPlugin(
+      /__applayout__/,
+      replaceCtxRequest(paths.layout)
+    ),
+    new webpack.ContextReplacementPlugin(
+      /__appsnippets__/,
+      replaceCtxRequest(paths.snippets)
+    ),
+    new webpack.ContextReplacementPlugin(
+      /__appsections__/,
+      replaceCtxRequest(paths.sections)
+    ),
   ];
 
   if (fs.existsSync(paths.vendors)) {
@@ -169,7 +185,7 @@ module.exports = {
       {
         test: /\.liquid$/,
         exclude: commonExcludes(),
-        loader: `extract-loader!liquid-asset-loader?dev-server=${
+        loader: `extract-loader!liquid-asset-loader!@shopify/slate-component-loader?dev-server=${
           isDevServer ? 'true' : 'false'
         }`,
       },

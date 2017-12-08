@@ -24,6 +24,9 @@
 // The context we look for, and replace, is the `__app[src|vendors]__` part.
 //
 var dynamicCtx = 'salut';
-require('__appsrc__/' + dynamicCtx + '.liquid');
+require('__apptemplates__/' + dynamicCtx + '.liquid');
+require('__applayout__/' + dynamicCtx + '.liquid');
+require('__appsnippets__/' + dynamicCtx + '.liquid');
+require('__appsections__/' + dynamicCtx + '.liquid');
 require('__appsrc__/' + dynamicCtx + '.json');
 require('__appvendors__/' + dynamicCtx);
