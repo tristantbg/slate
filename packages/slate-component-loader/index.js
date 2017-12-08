@@ -34,7 +34,7 @@ function componentInjector(match, componentName, properties, offset, string) {
   parts.assignProperties = '';
   parts.restoreProperties = '';
   getComponentProperties(properties).map(keyValuePair => {
-    const tempVariableName = `${new Date().getTime()}_${keyValuePair.key}`;
+    const tempVariableName = `${keyValuePair.key}_${new Date().getTime()}`;
     parts.assignProperties += `{% assign ${tempVariableName} = ${
       keyValuePair.key
     } %}\n
