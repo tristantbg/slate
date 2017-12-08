@@ -6,7 +6,6 @@ function findComponentDeclarations(source) {
   const regex = /\{%\s*component '(.*?)',?\s?(.*?)%\}/g;
   const matches = [];
   let match;
-  let props;
 
   while ((match = regex.exec(source)) !== null) {
     // This is necessary to avoid infinite loops with zero-width matches
@@ -14,26 +13,32 @@ function findComponentDeclarations(source) {
       regex.lastIndex++;
     }
 
-    props = match[2].split(',').map(keyValue => {
-      return {
-        key: keyValue.split(':')[0],
-        value: keyValue
-          .split(':')[1]
-          .replace(/'/g, '')
-          .trim(),
-      };
-    });
-
     if (match[1]) {
       matches.push({
         fullMatch: match[0],
         componentName: match[1],
-        props,
+        getComponentProperties(match[2]),
       });
     }
   }
 
   return matches;
+}
+
+function getComponentProperties(propertiesString) {
+  if (!!propertiesString) {
+    return [];
+  }
+
+  return propertiesString.split(',').map(keyValue => {
+    return {
+      key: keyValue.split(':')[0],
+      value: keyValue
+        .split(':')[1]
+        .replace(/'/g, '')
+        .trim(),
+    };
+  });
 }
 
 module.exports = function(content) {
