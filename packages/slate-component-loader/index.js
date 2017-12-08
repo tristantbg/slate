@@ -5,7 +5,7 @@ const parse = require('./parser');
 const regex = /\{%\s*component '(.*?)',?\s?(.*?)%\}/g
 
 function getComponentProperties(propertiesString) {
-  if (!!propertiesString) {
+  if (!!!propertiesString) {
     return [];
   }
 
@@ -20,7 +20,7 @@ function getComponentProperties(propertiesString) {
   });
 }
 
-function componentInjector(match, componentName, attributes, offset, string) {
+function componentInjector(match, componentName, properties, offset, string) {
   const componentPath = path.resolve(
       `src/components/${componentName}.component.liquid`
   );
@@ -33,14 +33,15 @@ function componentInjector(match, componentName, attributes, offset, string) {
       false
   );
 
-  //TODO => also inject the {% assign %} for each liquid attribute
-  //   foreach attribute, do the following
-  //   1. assign old_var the current variable
-  //   2. assign the value to var
-  //   3. render the components
-  //   4. assign var the value of old_var
-  console.log(parts)
+  getComponentProperties(properties).map(keyValuePair => {
+    const tempVariableName = `${new Date().getTime()}_${keyValuePair.key}`;
+    parts.assignProperties += `{% assign ${tempVariableName} = ${keyValuePair.key} %}\n` +
+    `{% assign ${keyValuePair.key} = ${keyValuePair.value} %}\n`
+    parts.restoreProperties += `{% assign ${keyValuePair.key} = ${tempVariableName} %}\n`
 
+  });
+
+  console.log(parts);
   return parts;
 }
 
