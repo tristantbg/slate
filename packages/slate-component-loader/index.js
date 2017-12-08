@@ -5,7 +5,7 @@ const parse = require('./parser');
 module.exports = function(content) {
   this.cacheable();
 
-  const matches = content.match(/{% +component +'(.+?)'(?:, +?(.*?) ) *%}/);
+  const matches = content.match(/{% +component +'(.+?)'(, +?.*?) *%}/);
 
   if (matches === null) {
     return content;
