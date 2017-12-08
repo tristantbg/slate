@@ -17,12 +17,16 @@ function findComponentDeclarations(source) {
     props = match[2].split(',').map(keyValue => {
       return {
         key: keyValue.split(':')[0],
-        value: keyValue.split(':')[1].replace(/'/g, '').trim(),
+        value: keyValue
+          .split(':')[1]
+          .replace(/'/g, '')
+          .trim(),
       };
     });
 
     if (match[1]) {
       matches.push({
+        fullMatch: match[0],
         componentName: match[1],
         props,
       });
