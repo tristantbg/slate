@@ -11,10 +11,9 @@ function getComponentProperties(propertiesString) {
 
   return propertiesString.split(',').map(keyValue => {
     return {
-      key: keyValue.split(':')[0],
+      key: keyValue.split(':')[0].trim(),
       value: keyValue
         .split(':')[1]
-        .replace(/'/g, '')
         .trim(),
     };
   });
@@ -33,6 +32,8 @@ function componentInjector(match, componentName, properties, offset, string) {
       false
   );
 
+  parts.assignProperties = '';
+  parts.restoreProperties = '';
   getComponentProperties(properties).map(keyValuePair => {
     const tempVariableName = `${new Date().getTime()}_${keyValuePair.key}`;
     parts.assignProperties += `{% assign ${tempVariableName} = ${keyValuePair.key} %}\n` +
