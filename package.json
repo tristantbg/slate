@@ -14,7 +14,7 @@
     "url": "https://github.com/Shopify/slate.git"
   },
   "scripts": {
-    "test": "node_modules/.bin/jest --silent",
+    "test": "node_modules/.bin/jest",
     "lint": "eslint --max-warnings 10 ./ && stylelint './**/*.[s]css'",
     "lint:styles": "stylelint '**/*.[s]css'",
     "lint:fix": "eslint ./ --fix && prettier-stylelint **/*.scss",

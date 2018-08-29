@@ -6,14 +6,16 @@ const consoleControl = require('console-control-strings');
 const clearConsole = require('react-dev-utils/clearConsole');
 const env = require('@shopify/slate-env');
 const {event} = require('@shopify/slate-analytics');
+const SlateConfig = require('@shopify/slate-config');
 
 const promptContinueIfPublishedTheme = require('../prompts/continue-if-published-theme');
 const promptSkipSettingsData = require('../prompts/skip-settings-data');
 const AssetServer = require('../../tools/asset-server');
 const DevServer = require('../../tools/dev-server');
 const webpackConfig = require('../../tools/webpack/config/dev');
-const config = require('../../slate-tools.config');
 const packageJson = require('../../package.json');
+
+const config = new SlateConfig(require('../../slate-tools.schema'));
 
 const options = {
   env: argv.env,
@@ -47,7 +49,6 @@ assetServer.compiler.hooks.done.tap('CLI', (stats) => {
     });
 
     console.log(chalk.red('Failed to compile.\n'));
-    console.log(config.paths.lib);
 
     statsJson.errors.forEach((message) => {
       console.log(`${message}\n`);

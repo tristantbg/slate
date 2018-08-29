@@ -1,17 +1,5 @@
-const {resolveTheme, generate} = require('@shopify/slate-config');
+const commonPaths = require('@shopify/slate-config/common/paths.schema');
 
-module.exports = generate({
-  id: 'slateTools',
-  items: [
-    {
-      id: 'paths',
-      description: 'Paths used by @shopify/slate-tools',
-      items: [
-        {
-          id: 'dist',
-          default: resolveTheme('dist'),
-        },
-      ],
-    },
-  ],
-});
+module.exports = {
+  ...commonPaths,
+};

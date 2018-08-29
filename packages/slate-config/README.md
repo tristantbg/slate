@@ -10,19 +10,17 @@ const slateConfig = require('@shopify/slate-config');
 module.exports = slateConfig.generate({
   items: [
     {
-      id: 'babelLoaderEnable',
+      id: 'babel.enable',
       default: true,
-      description: 'Enable/disable Babel for theme scripts',
-      type: 'boolean',
     },
   ],
 });
 ```
 
-`slate.config.js` could override the default value of `babelLoaderEnable` by declaring the following:
+`slate.config.js` could override the default value of `babel.enable` by declaring the following:
 
 ```js
 module.exports = {
-  babelLoaderEnable: false,
+  'babel.enable': false,
 };
 ```

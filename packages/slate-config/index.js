@@ -1,55 +1,43 @@
 const path = require('path');
-const fs = require('fs');
 
-const themeDirectory = fs.realpathSync(process.cwd());
-
-function getSlateConfig() {
-  try {
-    const slateRcPath = resolveTheme('slate.config.js');
-    return require(slateRcPath);
-  } catch (error) {
-    return {};
+module.exports = class SlateConfig {
+  constructor(schema) {
+    this.schema = schema;
+    this.userConfig = this._getSlateConfig();
   }
-}
 
-function generate(schema, slaterc = getSlateConfig()) {
-  // Creates a config object of default or slaterc values
-  const config = _generateConfig([schema], slaterc)[schema.id];
-  config.__schema = schema;
-
-  return config;
-}
-
-function _generateConfig(items, overrides) {
-  const config = {};
-
-  items.forEach((item) => {
-    if (Array.isArray(item.items)) {
-      config[item.id] = _generateConfig(
-        item.items,
-        overrides && overrides[item.id],
+  set(key, value, override = false) {
+    if (typeof this.config[key] !== 'undefined' && !override) {
+      throw new Error(
+        `[slate-config]: A value for '${key}' has already been set. A value can only be set once.`,
       );
-    } else if (overrides && typeof overrides[item.id] !== 'undefined') {
-      config[item.id] = overrides[item.id];
-    } else if (typeof item.default !== 'undefined') {
-      config[item.id] = item.default;
+    } else {
+      this.config[key] =
+        typeof this.userConfig[key] !== 'undefined'
+          ? this.userConfig[key]
+          : value;
     }
-  });
+  }
 
-  return config;
-}
+  get(key) {
+    const value = this.schema[key];
 
-function resolveTheme(relativePath) {
-  return path.resolve(themeDirectory, relativePath);
-}
+    if (typeof value === 'function') {
+      return value(this);
+    } else if (typeof value === 'undefined') {
+      throw new Error(
+        `[slate-config]: A value has not been defined for the key '${key}'`,
+      );
+    } else {
+      return value;
+    }
+  }
 
-function resolveSelf(relativePath) {
-  return path.resolve(__dirname, relativePath);
-}
-
-module.exports = {
-  generate,
-  resolveTheme,
-  resolveSelf,
-  getSlateConfig,
+  _getSlateConfig() {
+    try {
+      return require(path.join(process.cwd, 'slate.config.js'));
+    } catch (error) {
+      return {};
+    }
+  }
 };
